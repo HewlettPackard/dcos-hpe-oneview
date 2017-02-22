@@ -1,0 +1,6 @@
+---
+- name: Install Docker
+  include: docker.yml
+  
+- name: Install DC/OS Dependencies
+  include: dcos-deps.yml

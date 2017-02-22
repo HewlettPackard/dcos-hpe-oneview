@@ -1,0 +1,49 @@
+---
+- include: tasks/install-pip.yml
+
+- name: Install Docker-Py
+  pip: name=docker-py version=1.8.1
+
+- name: Start Nginx
+  docker:
+    name: nginx
+    image: nginx
+    state: present
+    volumes:
+    - /var/tmp/dcos:/usr/share/nginx/html
+    ports:
+    - "80:80"
+    restart_policy: always
+    net: default # workaround bug: https://github.com/ansible/ansible-modules-core/issues/1885
+
+- name: Create Genconf Dir
+  file: path=~/dcos/genconf state=directory
+
+- name: Generate IP Detection Script
+  copy:
+    src: "files/ip-detect"
+    dest: "/root/dcos/genconf/ip-detect"
+    mode: "u=rwx,g=rwx,o=rwx"
+
+- synchronize:
+    src: "{{ DCOS_GENERATE_CONFIG_PATH }}"
+    dest: "/root/dcos/dcos_generate_config.sh"
+
+- name: Lookup Headnode Public IP
+  set_fact: headnode_ip={{ hostvars[groups['dcos-masters'][0]]['public_ip'] }}
+
+- debug:
+    msg: "Master Headnode IP found: {{ headnode_ip }}"
+    
+- name: Generate IP Node Installer Config
+  template: src=templates/config.yaml.j2 dest="~/dcos/genconf/config.yaml"
+    
+- name: Generate DC/OS Node Installer
+  command: creates="~/dcos/genconf/serve" bash ~/dcos/dcos_generate_config.sh --genconf
+  args:
+    chdir: ~/dcos
+  register: genconf_result
+
+- name: Host DC/OS Node Installer via Nginx
+  shell: cp -rpv ~/dcos/genconf/serve/* /var/tmp/dcos/
+  when: genconf_result.changed

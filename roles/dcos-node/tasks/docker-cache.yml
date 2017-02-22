@@ -1,0 +1,11 @@
+---
+# Cache Docker images for use by the bootstrap machine to speed up install
+
+- name: docker images
+  command: docker images nginx
+  register: docker_images
+   
+- name: Cache NGINX Image
+  command: docker pull nginx
+  when: docker_images.stdout.find('nginx') == -1
+

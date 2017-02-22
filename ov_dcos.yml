@@ -1,0 +1,88 @@
+##
+# Copyright (2016) Hewlett Packard Enterprise Development LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+###
+
+---
+# This playbook deploys a complete DC-OS Cluster according to hosts definition
+
+- name: Install Bootstrap Node
+  hosts: dcos-bootstrap 
+  vars: 
+    ov_osbp: "{{ os_build_plan_bootstrap }}"
+    ov_profile: "{{ ov_template_bootstrap_node }}" 
+  gather_facts: no
+  roles:
+    - hpe-oneview-server
+    - dcos-node
+
+- name: Install Master Nodes 
+  hosts: dcos-masters
+  vars: 
+    ov_osbp: "{{ os_build_plan_master }}"
+    ov_profile: "{{ ov_template_master_node }}" 
+  gather_facts: no
+  roles:
+    - hpe-oneview-server
+    - dcos-node
+
+- name: Install Private Agent Nodes
+  hosts: dcos-private-agents
+  vars: 
+    ov_osbp: "{{ os_build_plan_agent }}"
+    ov_profile: "{{ ov_template_private_agent_node }}" 
+  gather_facts: no
+  roles:
+    - hpe-oneview-server
+    - dcos-node
+
+- name: Install Public Agent Nodes
+  hosts: dcos-public-agents
+  vars: 
+    ov_osbp: "{{ os_build_plan_agent }}"
+    ov_profile: "{{ ov_template_public_agent_node }}" 
+  gather_facts: no
+  roles:
+    - hpe-oneview-server
+    - dcos-node
+    
+- name: Collect configuration of nodes
+  hosts: all-nodes 
+  strategy: free
+  become: yes
+  become_user: root
+  gather_facts: yes
+  tasks:
+  - name: Link Certificate Authorities
+    # required on CentOS because DC/OS compilation is done on Ubuntu
+    file: src=/etc/ssl/certs/ca-bundle.crt dest=/etc/ssl/certs/ca-certificates.crt state=link
+  - include: tasks/detect-public-ip.yml
+
+- name: Generate DC/OS Bootstrap
+  hosts: dcos-bootstrap
+  become: yes
+  become_user: root
+  gather_facts: no
+  tasks:
+  - include: tasks/bootstrap.yml
+
+- name: Install DC/OS Masters and Agents
+  hosts: dcos-masters,dcos-agents
+  strategy: free
+  become: yes
+  become_user: root
+  gather_facts: no
+  tasks:
+  - include: tasks/install.yml
+

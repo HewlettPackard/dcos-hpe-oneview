@@ -1,0 +1,9 @@
+---
+cluster_name: "{{ DCOS_CLUSTER_NAME }}"
+bootstrap_url: http://bootstrap.cilab.net
+exhibitor_storage_backend: static
+master_discovery: static
+resolvers:
+- "{{ dns_server }}"
+
+master_list: [{% for host in groups['dcos-masters'] %}{{ hostvars[host]['public_ip'] | to_json }}{% if not loop.last %},{% endif %}{% endfor %}]

@@ -1,0 +1,11 @@
+---
+- name: Set Public Network Interface
+  shell: "ifconfig | grep eno | cut --delimiter=: -f 1"
+  register: if_name
+
+- set_fact: public_iface={{ if_name.stdout }}
+
+- name: Detect Public IP
+  set_fact: public_ip={{ hostvars[inventory_hostname]['ansible_' + public_iface]['ipv4']['address'] }}
+
+- debug: var=public_ip

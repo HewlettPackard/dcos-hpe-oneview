@@ -1,0 +1,84 @@
+---
+- name: Add docker yum repo
+  blockinfile:
+    dest: /etc/yum.repos.d/docker.repo
+    create: yes
+    block: |
+      [dockerrepo]
+      name=Docker Repository
+      baseurl=https://yum.dockerproject.org/repo/main/centos/$releasever/
+      enabled=1
+      gpgcheck=1
+      gpgkey=https://yum.dockerproject.org/gpg
+
+- name: Install Docker
+  yum: >
+    name=docker-engine-1.11.2
+    state=present
+
+- name: Start Docker
+  service:
+    name: docker
+    state: started
+    enabled: yes
+ 
+- name: Verify Docker Storage driver
+  shell: docker info | grep "Storage Driver"
+  register: docker_storage_driver
+ 
+- name: Stop Docker
+  service:
+    name: docker
+    state: stopped
+  when: docker_storage_driver.stdout.find('overlay') == -1
+  
+- name: Configure Docker to use OverlayFS (part 1)
+  set_fact:
+    dockerd_cmd: "docker daemon"
+    dockerd_arg: "--storage-driver=overlay"
+  when: docker_storage_driver.stdout.find('overlay') == -1
+  
+- name: Configure Docker to use OverlayFS (part 2)
+  replace: >
+    dest=/usr/lib/systemd/system/docker.service
+    regexp="^(ExecStart=(.*){{ dockerd_cmd }}) (?!{{ dockerd_arg }})"
+    replace="\1 {{ dockerd_arg }} "
+  when: docker_storage_driver.stdout.find('overlay') == -1
+  
+- name: Create docker group
+  group: >
+    name=docker
+    state=present
+
+- name: Add users to the docker group
+  user:
+    name: "{{ item }}"
+    groups: docker
+    append: yes
+  with_items:
+  - docker
+
+- systemd:
+    state: restarted
+    daemon_reload: yes
+    name: docker
+  when: docker_storage_driver.stdout.find('overlay') == -1
+    
+#- name: Start Docker
+#  service:
+#    name: docker
+#    state: reloaded
+#    enabled: yes
+#  when: docker_storage_driver.stdout.find('overlay') == -1
+  
+- name: Set SELinux to permissive mode
+  selinux: policy=targeted state=permissive
+
+- name: Allow sudo without a tty
+  lineinfile: >
+    dest=/etc/sudoers
+    regexp="^Defaults(\s+)(.*)requiretty(.*)"
+    line="#Defaults\1\2requiretty\3"
+    backrefs=yes
+
+

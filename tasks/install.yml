@@ -1,0 +1,16 @@
+---
+- name: Download DC/OS Node Installer
+  get_url: url=http://bootstrap/dcos_install.sh dest=/tmp/dcos_install.sh mode=0755
+
+
+- name: Add nogroup group
+  command: groupadd -f nogroup
+  
+- name: Install DC/OS Node
+  command: creates="/opt/mesosphere" /tmp/dcos_install.sh {{ node_type }}
+
+- name: Validate DC/OS Installation
+  #command: /usr/local/sbin/dcos-postflight
+  script: scripts/dcos-postflight.sh
+  changed_when: false
+  check_mode: no

@@ -37,7 +37,7 @@ node_type=slave_public
 [dcos-private-agents]
 agent2
 agent3
-agent4
+
 
 [dcos-private-agents:vars]
 node_type=slave
@@ -47,3 +47,7 @@ node_type=slave
 dcos-bootstrap
 dcos-masters
 dcos-agents
+
+# Removed nodes
+[dcos-evicted-agents]
+

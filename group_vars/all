@@ -28,6 +28,8 @@ ov_template_public_agent_node: 'DCOS Public Agent Node'
 ov_template_private_agent_node: 'DCOS Private Agent Node'
 ov_template_bootstrap_node: 'DCOS Bootstrap Node' 
 #server_hardware_name: 'ECOsystem, bay 12'
+ov_hardware_class: 'C7000' # this is default
+#ov_hardware_class: 'SYNERGY'
 
 # ICsp Settings
 icsp: 192.168.1.20 # ICsp appliance IP Address

@@ -14,10 +14,10 @@
 # limitations under the License.
 ###
 ---
-- hosts: all
+- hosts: localhost
   vars:
     config: "{{ playbook_dir }}/config.json"
-    server_profile_template_name: "ProfileTemplateTest1"
+    server_profile_template_name: "DCOS Master Node 2"
     server_hardware_type_name: "BL460c Gen8 1"
     enclosure_group_name: "EG-EcoSystem"
   tasks:
@@ -29,7 +29,7 @@
           name: "{{ server_profile_template_name }}"
           serverHardwareTypeName: "{{ server_hardware_type_name }}"
           enclosureGroupName: "{{ enclosure_group_name }}"
-      delegate_to: localhost
+      #delegate_to: localhost
 
     - name: Update bootMode from recently created template
       oneview_server_profile_template:
@@ -40,10 +40,18 @@
           serverHardwareTypeName: "{{ server_hardware_type_name }}"
           enclosureGroupName: "{{ enclosure_group_name }}"
           bootMode:
-            manageMode: True
-            pxeBootPolicy: Auto
-            mode: "UEFI"
-      delegate_to: localhost
+            #manageMode: True
+            #pxeBootPolicy: Auto
+            #mode: "UEFI"
+          boot:
+            manageBoot: true
+            order:
+            - PXE
+            - CD
+            - Floppy
+            - USB
+            - HardDisk
+      #delegate_to: localhost
     - name: Create Connections for recently created templates
       oneview_server_profile_template:
         config: "{{ config }}"
@@ -54,20 +62,24 @@
           enclosureGroupName: "{{ enclosure_group_name }}"
           connections:
             - id: 1
-              name: "DeployNet-A"
+              name: "Deployment"
               functionType: Ethernet
-              portId: Auto
+              portId: Flb 1:1-a
+              requestedVFs: Auto
               requestedMbps: 2500
-              networkUri: "/rest/ethernet-networks/85c2ff96-73c9-4cf5-93e7-4316c56d07a8"
+              networkUri: "/rest/ethernet-networks/55a60775-7f68-435e-b66a-59242c76779e"
               boot:
+                priority: Primary
             - id: 2
-              name: "Management-a"
+              name: "Management"
               functionType: Ethernet
-              portId: Auto
+              portId: Flb 1:2-a
+              requestedVFs: Auto
               requestedMbps: 2500
-              networkUri: "/rest/ethernet-networks/8a508330-e21b-48cf-ae71-600128738147"
+              networkUri: "/rest/ethernet-networks/4cdcc4ae-5b5a-44c5-aa1b-9ed11c8867a0"
               boot:
-      delegate_to: localhost
+                priority: NotBootable
+      #delegate_to: localhost
     - name: Create logicalDrives for recently created templates
       oneview_server_profile_template:
         config: "{{ config }}"
@@ -80,10 +92,11 @@
             controllers:
             - deviceSlot: Embedded
               mode: RAID
-              initialize: false
+              initialize: true
               logicalDrives:
-              - name: Operating System
-                raidLevel: RAID1
-                numPhysicalDrives: 2
+              - name: Boot
+                raidLevel: RAID0
+                bootable: true
+                numPhysicalDrives: 1
                 driveTechnology: 
-      delegate_to: localhost 
+      #delegate_to: localhost 

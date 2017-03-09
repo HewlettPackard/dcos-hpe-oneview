@@ -4,17 +4,22 @@
 - name: Install Docker-Py
   pip: name=docker-py version=1.8.1
 
+- name: Create tmp htlm content folder
+  file: path=/var/tmp/dcos state=directory
+
+#- name: Start Nginx
+#  shell: docker run -d -p 80:80 --name nginx -v /var/tmp/dcos:/usr/share/nginx/html nginx
+  
 - name: Start Nginx
-  docker:
+  docker_container:
     name: nginx
     image: nginx
-    state: present
+    state: started
     volumes:
     - /var/tmp/dcos:/usr/share/nginx/html
     ports:
     - "80:80"
     restart_policy: always
-    net: default # workaround bug: https://github.com/ansible/ansible-modules-core/issues/1885
 
 - name: Create Genconf Dir
   file: path=~/dcos/genconf state=directory
@@ -44,6 +49,12 @@
     chdir: ~/dcos
   register: genconf_result
 
+#- synchronize:
+#    src: "~/dcos/genconf/serve"
+#    dest: "/var/tmp/dcos"
+#    recursive: yes
+
 - name: Host DC/OS Node Installer via Nginx
   shell: cp -rpv ~/dcos/genconf/serve/* /var/tmp/dcos/
   when: genconf_result.changed
+  

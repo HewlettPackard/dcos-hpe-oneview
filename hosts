@@ -38,7 +38,6 @@ node_type=slave_public
 agent2
 agent3
 
-
 [dcos-private-agents:vars]
 node_type=slave
 

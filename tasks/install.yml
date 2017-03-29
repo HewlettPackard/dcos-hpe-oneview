@@ -2,9 +2,8 @@
 - name: Download DC/OS Node Installer
   get_url: url=http://bootstrap/dcos_install.sh dest=/tmp/dcos_install.sh mode=0755
 
-
 - name: Add nogroup group
-  command: groupadd -f nogroup
+  command: groupadd nogroup
   
 - name: Install DC/OS Node
   command: creates="/opt/mesosphere" /tmp/dcos_install.sh {{ node_type }}

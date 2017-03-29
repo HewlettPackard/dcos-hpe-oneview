@@ -1,52 +1,47 @@
 ---
-- name: Add docker yum repo for CentOS
+- name: Add docker yum repo
   blockinfile:
     dest: /etc/yum.repos.d/docker.repo
     create: yes
     block: |
       [dockerrepo]
       name=Docker Repository
-      baseurl=https://yum.dockerproject.org/repo/main/centos/7
+      baseurl=https://yum.dockerproject.org/repo/main/centos/7/
       enabled=1
       gpgcheck=1
       gpgkey=https://yum.dockerproject.org/gpg
 
-   
-- name: Install Docker
-  yum: >
-    name=docker-engine-1.11.2
-    state=present
- 
- 
-- name: Start Docker
-  service:
-    name: docker
-    state: started
-    enabled: yes
- 
-- name: Verify Docker Storage driver
-  shell: docker info | grep "Storage Driver"
-  register: docker_storage_driver
- 
+- name: Install Docker on CentOS
+  yum:
+    name: docker-engine-1.11.2
+    state: present 
+  when: ansible_distribution == 'CentOS'
+
+- name: Install Docker on Redhat
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - docker-engine-1.11.2 
+    - docker-engine-selinux-1.11.2
+  when: ansible_distribution == 'RedHat'
+  
 - name: Stop Docker
   service:
     name: docker
     state: stopped
-  when: docker_storage_driver.stdout.find('overlay') == -1
-  
+
 - name: Configure Docker to use OverlayFS (part 1)
   set_fact:
     dockerd_cmd: "docker daemon"
     dockerd_arg: "--storage-driver=overlay"
-  when: docker_storage_driver.stdout.find('overlay') == -1
-  
+
 - name: Configure Docker to use OverlayFS (part 2)
   replace: >
     dest=/usr/lib/systemd/system/docker.service
     regexp="^(ExecStart=(.*){{ dockerd_cmd }}) (?!{{ dockerd_arg }})"
     replace="\1 {{ dockerd_arg }} "
-  when: docker_storage_driver.stdout.find('overlay') == -1
-  
+
 - name: Create docker group
   group: >
     name=docker
@@ -60,19 +55,12 @@
   with_items:
   - docker
 
-- systemd:
-    state: restarted
-    daemon_reload: yes
+- name: Start Docker
+  service:
     name: docker
-  when: docker_storage_driver.stdout.find('overlay') == -1
-    
-#- name: Start Docker
-#  service:
-#    name: docker
-#    state: reloaded
-#    enabled: yes
-#  when: docker_storage_driver.stdout.find('overlay') == -1
-  
+    state: started
+    enabled: yes
+
 - name: Set SELinux to permissive mode
   selinux: policy=targeted state=permissive
 

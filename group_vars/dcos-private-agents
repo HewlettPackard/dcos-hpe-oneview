@@ -1,0 +1,5 @@
+# OneView Settings
+ov_template: 'DCOS Private Agent Node' 
+os_build_plan: 'DCOS - RHEL 7.2 x64 Scripted Install'
+#os_build_plan: 'DCOS - CentOS 7.2 x64 Scripted Install'
+node_type: 'slave'

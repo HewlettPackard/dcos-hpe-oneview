@@ -1,0 +1,8 @@
+{
+  "ip": "192.168.1.30",
+  "credentials": {
+    "userName": "administrator",
+    "password": "password"
+  },
+  "api_version": 300
+}

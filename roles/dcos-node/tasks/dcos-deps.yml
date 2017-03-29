@@ -17,7 +17,7 @@
    - ipset
    - ntp
    - ntpdate
-   - ntp-doc
+#   - ntp-doc
 
 # Firewall should be configured if cluster is publicly accessible.
 # For local dev/test/demo, just disable it.

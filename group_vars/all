@@ -22,28 +22,10 @@ httpd_port: 80
 DCOS_GENERATE_CONFIG_PATH: '/root/dcos-cache/dcos_generate_config.sh'   # copied with $  curl -O https://downloads.dcos.io/dcos/stable/dcos_generate_config.sh
 DCOS_CLUSTER_NAME: 'DCOS-ONEVIEW'
 
-# Docker EE 
-DOCKER-EE-URL: 'https://storebits.docker.com/ee/rhel/sub-b21ffeb6-c440-4ff1-8528-44d6abb7890a'
-
-# OneView Settings
-ov_template_master_node: 'DCOS Master Node' 
-ov_template_public_agent_node: 'DCOS Public Agent Node'
-ov_template_private_agent_node: 'DCOS Private Agent Node'
-ov_template_bootstrap_node: 'DCOS Bootstrap Node' 
-#server_hardware_name: 'ECOsystem, bay 12'
-ov_hardware_class: 'C7000' # this is default
-#ov_hardware_class: 'SYNERGY'
-
 # ICsp Settings
 icsp: 192.168.1.20 # ICsp appliance IP Address
 icsp_username: Administrator # ICsp user name
 icsp_password: password # ICsp password
-os_build_plan_bootstrap: 'DCOS - RHEL 7.2 x64 Scripted Install'
-os_build_plan_master: 'DCOS - RHEL 7.2 x64 Scripted Install'
-os_build_plan_agent: 'DCOS - RHEL 7.2 x64 Scripted Install'
-#os_build_plan_bootstrap: 'DCOS - CentOS 7.2 x64 Scripted Install'
-#os_build_plan_master: 'DCOS - CentOS 7.2 x64 Scripted Install'
-#os_build_plan_agent: 'DCOS - CentOS 7.2 x64 Scripted Install'
 osbp_custom_attributes:
   - SSH_CERT: "{{ lookup('file', '~/.ssh/root_ansible.pub') }}"
 

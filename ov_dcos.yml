@@ -54,7 +54,6 @@
 
 - name: Install DC/OS Masters and Agents
   hosts: dcos-masters,dcos-agents
-  strategy: free
   become: yes
   become_user: root
   gather_facts: no

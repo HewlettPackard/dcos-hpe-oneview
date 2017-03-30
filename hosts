@@ -26,7 +26,6 @@ agent1
 [dcos-private-agents]
 agent2
 agent3
-agent4
 
 # All nodes are either bootstrap, masters, or agents
 [all-nodes:children]

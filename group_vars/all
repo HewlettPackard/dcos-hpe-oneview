@@ -21,6 +21,7 @@ httpd_port: 80
 # DCOS Settings
 DCOS_GENERATE_CONFIG_PATH: '/root/dcos-cache/dcos_generate_config.sh'   # copied with $  curl -O https://downloads.dcos.io/dcos/stable/dcos_generate_config.sh
 DCOS_CLUSTER_NAME: 'DCOS-ONEVIEW'
+DCOS_BOOTSTRAP_URL: 'http://bootstrap.cilab.net'
 
 # ICsp Settings
 icsp: 192.168.1.20 # ICsp appliance IP Address

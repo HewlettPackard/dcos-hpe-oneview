@@ -1,0 +1,52 @@
+# limitations under the License.
+###
+
+# default user and password generated on ICsp provisioning
+# If you set the SSH key during the server provisioning, you don't need to
+# specify the credentials
+
+# If you wish, you can specify manually the IP addres that ICsp will set
+# to the provisioned server ethernet adapter
+
+# There is only one bootstrap node
+[dcos-bootstrap]
+bootstrap
+
+# Masters should be an odd number
+[dcos-masters]
+master1
+master2
+master3
+
+[dcos-masters:vars]
+node_type=master
+
+# There are 2 types of agents, public and private
+[dcos-agents:children]
+dcos-public-agents
+dcos-private-agents
+
+# We start with 1 public agent
+[dcos-public-agents]
+agent1
+
+[dcos-public-agents:vars]
+node_type=slave_public
+
+# We start with 2 private agents
+[dcos-private-agents]
+agent2
+agent3
+agent4
+
+[dcos-private-agents:vars]
+node_type=slave
+
+# All nodes are either bootstrap, masters, or agents
+[all-nodes:children]
+dcos-bootstrap
+dcos-masters
+dcos-agents
+
+# Removed nodes
+[dcos-evicted-agents]

@@ -1,0 +1,40 @@
+###
+# Copyright (2017) Hewlett Packard Enterprise Development LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+###
+
+---
+# This playbook removes a agent from DC/OS Cluster and delete it from HPE OneView
+
+- name: Remove agent from DC/OS Cluster and delete it from HPE OneView
+  hosts: dcos-evicted-agents 
+  gather_facts: no
+  tasks:
+    - name: Evict designated node from DC/OS   
+      vars: 
+        node_type: "dcos-mesos-slave"
+      shell: systemctl kill -s SIGUSR1 {{ node_type }} && systemctl stop {{ node_type }} 
+
+    - name: wait for draining 1mn  
+      command: sleep 60
+
+    - name: Delete server profile from HPE OneView
+      connection: local
+      oneview_server_profile:
+        config: "{{ playbook_dir }}/config.json"
+        state: absent        
+        data:
+          name: "{{ inventory_hostname }}"
+
+      ignore_errors: true

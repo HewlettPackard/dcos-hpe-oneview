@@ -1,0 +1,8 @@
+{
+  "ip": "YOURONEVIEWIPADDRESS",
+   "api_version": 300,
+  "credentials": {
+    "userName": "YOURONEVIEWUSERNAME",
+    "password": "YOURONEVIEWPASSWORD"
+  }
+} 

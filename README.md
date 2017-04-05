@@ -44,6 +44,8 @@ We used OpenSource DC/OS version 1.8.8 for this proof of concept.
 
 HPE OneView 3.00.05 running as a VMware appliance was used during this integration work. Enclosure was imported, server hardware and VirtualConnect interconnect modules discovered.
 
+![oneview](https://cloud.githubusercontent.com/assets/11722750/24707567/656bce76-1a14-11e7-8d21-95431aa9529b.png)
+
 ### HPE ICsp
 
 HPE Insight Control Server Provisioning 7.6.0 running as a VMware appliance was used during this integration work. A Windows based Media server was also setup to host OS distribution.
@@ -119,6 +121,8 @@ git clone https://github.com/HewlettPackard/dcos-hpe-oneview
 
 We used Ansible 2.2.0 on a CentOS 7 system (virtual machine), which we call the Ansible Station throughout the document.
 
+![ansibleversion](https://cloud.githubusercontent.com/assets/11722750/24707628/b48e01e0-1a14-11e7-8f19-61c3f4dedeb5.jpg)
+
 ### Ansible Module for HPE OneView/ICsp
 
 The latest OneView module for Ansible was used. It can be installed with the following instructions:
@@ -159,12 +163,16 @@ The network environment needs to be able to access the Internet during the provi
 
 In HPE OneView we have created the networks required for the desired configuration (See diagram in chapter Network configuration)
 
+![oneviewnetwork](https://cloud.githubusercontent.com/assets/11722750/24707670/da792452-1a14-11e7-8075-a7f505fab01b.jpg)
+
 We then configured a Server Profile Template for each type of nodes with the following details:
 
 - Bootstrap Node: 2 network connections (Deployment and Protected Zone), BL460 Gen9
 - Master Node: 2 network connections (Deployment and Protected Zone), BL460 Gen8
 - Agent Node: 2 network connections (Deployment and Private Zone), BL460 Gen8
 - Public Agent Node: 2 network connections (Deployment and Public DMZ), BL460 Gen8
+
+![oneviewprofile](https://cloud.githubusercontent.com/assets/11722750/24707729/0ceea0ce-1a15-11e7-993b-e4b7d88efb27.jpg)
 
 **Notes:**
 >Although we created those Server Profile Templates manually, chapter Full infrastructure as code shows how to create those artifacts with code
@@ -184,6 +192,8 @@ The following changes were implemented in the custom CentOS build plan:
 7. Add a final step in OS build plan called, **DCOS - Install SSH Key** which calls the Unix script created in step 4
 
 This OS build plan called **DCOS - CentOS 7.2 x64 Scripted Install** is used for the building of all our nodes in the cluster
+
+![icsposbp](https://cloud.githubusercontent.com/assets/11722750/24707771/2dc547d0-1a15-11e7-868c-b0f30846ffe7.jpg)
 
 **Notes:**
 >Later on during the development of the solution we also validated the deployment on RHEL 7.2. The Kickstart file for RHEL7.2 is also provided in the solution. You can choose between CentOS 7.2 or RHEL7.2, by simply changing the ICsp OS build plan in the custom group\_vars files
@@ -419,6 +429,8 @@ The playbook contains a series of plays:
 
 The sequencing of the task in this playbook is the following:
 
+![schequencing](https://cloud.githubusercontent.com/assets/11722750/24707823/506c67dc-1a15-11e7-8774-6bd350ed64c9.jpg)
+
 The blue tasks are the ones running on the Ansible machine (localhost) and using the Composable Infrastructure REST API. The grey tasks are Ansible tasks running over SSH on target machines (once provisioned with an OS)
 
 Let's look in more details each of the plays from **ov\_dcos.yml**
@@ -441,13 +453,15 @@ The description of the **hpe-oneview-server** role is located in the folder **./
 1. use the **group\_vars/dcos-bootstrap** , **group\_vars/dcos-masters** , **group\_vars/dcos-private-agents** and **group\_vars/dcos-public-agents** for setting group specific variables such as the name of the OneView profile templates to use and ICsp build plan to execute
 2. Create the server profiles in HPE OneView from template provided and assign it to an available server-hardware in our pool of resources (this uses the HPE OneView REST API)
 
+![serverprofilescreated](https://cloud.githubusercontent.com/assets/11722750/24707885/89f425ee-1a15-11e7-87a6-e382961cd0ee.jpg)
 
 1. Power the servers on
 2. Register the servers in ICsp, using the iLO IP address (this uses the HPE ICsp REST API)
 3. Pass the network configuration set in **group\_vars/all** to ICsp (stored as ICsp custom properties). (this uses the HPE ICsp REST API)
 4. Deploy the OS on these servers using ICsp, and the OS build plan provided in custom group\_vars files (this uses the HPE ICsp REST API)
 
- 
+![iscpdeploying](https://cloud.githubusercontent.com/assets/11722750/24707936/aa9c35a2-1a15-11e7-889e-abc4d42f9106.jpg)
+
 **Notes:**
 >The tasks in the **hpe-oneview-server** role all run on the Ansible Station, as instructed by the **deleguate\_to: localhost** , as illustrated below:
 
@@ -535,6 +549,8 @@ The tasks **/tasks/install.yml** expects avariable called **node\_type** set to 
 
 When the playbooks terminates, we can see that it was successful (also it took about 1 hours and 22 minutes):
 
+![endofplaybook](https://cloud.githubusercontent.com/assets/11722750/24707990/d637a7b4-1a15-11e7-97b3-b98e2e532a33.jpg)
+
 To validate the configuration we can run the following validation procedure provided by Mesosphere:
 
 1. Install jq
@@ -590,9 +606,11 @@ This should result in the following:
 
 Once this is validated, we can now operate our brand new DC/OS cluster by accessing **http://master1/#/dashboard/** or any of the other masters.
 
- 
+![dcosdashboard3nodes](https://cloud.githubusercontent.com/assets/11722750/24708018/ef88d120-1a15-11e7-890a-eb01ac8b53c2.jpg)
+
 We can also select the Node view to validate our 3 Agents (1 public and 2 private), up and running.
 
+![dcos3nodes](https://cloud.githubusercontent.com/assets/11722750/24708049/08080176-1a16-11e7-88a0-ff1398c36e48.jpg)
  
 ## Use case 2 - Adding an Agent node to a live DC/OS cluster
 
@@ -606,6 +624,8 @@ agent4
 ````
 
 And reran the same Ansible playbook, and waited for the end of it to refresh the Nodes view. The 4th agent shows up in the node list as a Healthy node.
+
+![dcos4nodes](https://cloud.githubusercontent.com/assets/11722750/24708077/1f9a73b4-1a16-11e7-818a-02bfabf86890.jpg)
 
 ## Use case 3 - Removing an Agent node
 

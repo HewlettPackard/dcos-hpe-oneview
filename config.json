@@ -1,8 +1,8 @@
 {
-  "ip": "192.168.1.30",
+  "ip": "YOURONEVIEWIPADDRESS",
    "api_version": 300,
   "credentials": {
-    "userName": "administrator",
-    "password": "password"
+    "userName": "YOURONEVIEWUSERNAME",
+    "password": "YOURONEVIEWPASSWORD"
   }
 } 

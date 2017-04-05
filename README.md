@@ -543,14 +543,14 @@ chmod +x ./jq-linux64
 cp jq-linux64 /usr/bin/jq
 ````
 
-1. Retrieve public agents IP addresses
+2. Retrieve public agents IP addresses
 
 ````
 curl -s http://localhost:1050/system/health/v1/nodes | jq -r '.[] | map(select(.role == "agent_public")) | .[].host_ip' 
 192.168.22.101
 ````
 
-1. Retrieve private agents IP addresses
+3. Retrieve private agents IP addresses
 
 ````
 curl -s http://localhost:1050/system/health/v1/nodes | jq -r '.[] | map(select(.role == "agent")) | .[].host_ip' 
@@ -558,7 +558,7 @@ curl -s http://localhost:1050/system/health/v1/nodes | jq -r '.[] | map(select(.
 192.168.33.101
 ````
 
-1. Export those IP and install dig from bind-utils
+4. Export those IP and install dig from bind-utils
 
 ````
 export SLAVE\_HOSTS=192.168.33.101,192.168.33.102
@@ -566,7 +566,7 @@ export PUBLIC\_SLAVE\_HOSTS=192.168.22.101
 yum install bind-utils -y
 ````
 
-1. Add test user
+5. Add test user
 
 ````
 source /opt/mesosphere/environment.export
@@ -575,7 +575,7 @@ source /opt/mesosphere/active/dcos-integration-test/test\_env.export
 cd /opt/mesosphere/active/dcos-integration-test
 ````
 
-1. Run validation test
+6. Run validation test
 
 ``py.test -m 'not ccm' ``
 
@@ -592,7 +592,7 @@ Once this is validated, we can now operate our brand new DC/OS cluster by access
 We can also select the Node view to validate our 3 Agents (1 public and 2 private), up and running.
 
  
-##Use case 2 - Adding an Agent node to a live DC/OS cluster
+## Use case 2 - Adding an Agent node to a live DC/OS cluster
 
 Because the Ansible playbook have been designed to be idempotent (meaning that when run multiple times it will only make the changes to bring the existing configuration on par with the desired state, as described by the inventory **hosts** file), we can add node in the DC/OS cluster by simply adding new nodes in the hosts file. In our environment, we added an **agent4** to the list of private agents:
 
@@ -628,7 +628,7 @@ Once this is done we can run the following ansible playbook:
 
 This will first drain all services of all dcos-evicted-agents and then delete the HPE OneView server profiles associated with these nodes and return those resources to the available compute pool of resources.
 
-## Use case 4 - Decomposing and returning resources to free pools
+## Use case 4 - Decomposing and returning resources to free pool
 
 We have created another ansible playbook for destroying completely the DC/OS cluster and returning all the compute resources to the free pool of resources. The playbook is called **ov\_dcos\_decompose\_all.yml** , and it should be invoked (with care) using the following command:
 

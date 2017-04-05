@@ -24,15 +24,15 @@ DCOS_CLUSTER_NAME: 'DCOS-ONEVIEW'
 DCOS_BOOTSTRAP_URL: 'http://bootstrap.cilab.net'
 
 # ICsp Settings
-icsp: 192.168.1.20 # ICsp appliance IP Address
-icsp_username: Administrator # ICsp user name
-icsp_password: password # ICsp password
+icsp: <ICSPIPADDRESS> # ICsp appliance IP Address
+icsp_username: <ICSPUSERNAME> # ICsp user name
+icsp_password: <ICSPUSERPASSWORD> # ICsp password
 osbp_custom_attributes:
   - SSH_CERT: "{{ lookup('file', '~/.ssh/root_ansible.pub') }}"
 
 #iLO Credentials
-server_username: demopaq  # iLO credentials for the target server that will be registered in ICsp
-server_password: password #iLO password
+server_username: <ILOUSERNAME>  # iLO credentials for the target server that will be registered in ICsp
+server_password: <ILOPASSWORD> #iLO password
 
 # Network Settings
 domain_name: "cilab.net"

@@ -1,4 +1,4 @@
-#HPE Composable Infrastructure Pack for Mesosphere DC/OS 
+# HPE Composable Infrastructure Pack for Mesosphere DC/OS 
 
 # Introduction
 

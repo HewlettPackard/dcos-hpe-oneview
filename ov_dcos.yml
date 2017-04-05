@@ -1,0 +1,54 @@
+###
+# Copyright (2017) Hewlett Packard Enterprise Development LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# You may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+###
+
+---
+# This playbook deploys a complete DC-OS Cluster according to hosts definition
+
+- name: Install all Physical Nodes
+  hosts: all-nodes
+  vars: 
+    ov_osbp: "{{ os_build_plan }}"
+    ov_profile: "{{ ov_template }}" 
+  gather_facts: no
+  roles:
+    - hpe-oneview-server
+ 
+- name: All nodes are DC/OS Nodes
+  hosts: all-nodes 
+  gather_facts: yes
+  roles:
+    - dcos-node
+     
+- name: Collect configuration of nodes
+  hosts: all-nodes 
+  gather_facts: yes
+  tasks:
+  - name: Link Certificate Authorities
+    # required on CentOS because DC/OS compilation is done on Ubuntu
+    file: src=/etc/ssl/certs/ca-bundle.crt dest=/etc/ssl/certs/ca-certificates.crt state=link
+  - include: tasks/detect-public-ip.yml
+
+- name: Generate DC/OS Bootstrap
+  hosts: dcos-bootstrap
+  gather_facts: no
+  tasks:
+  - include: tasks/bootstrap.yml
+
+- name: Install DC/OS Masters and Agents
+  hosts: dcos-masters,dcos-agents
+  gather_facts: no
+  tasks:
+  - include: tasks/install.yml

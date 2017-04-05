@@ -143,6 +143,8 @@ THE HPE servers were configured to use local storage using the local SmartArray 
 
 The following network configuration was implemented:
 
+![networkdiagram](https://cloud.githubusercontent.com/assets/11722750/24707479/07173180-1a14-11e7-811e-8c792397805f.png)
+
 The router in the lab was configured to route between all networks. It is also configured with a DHCP Proxy Agent, so that a single DHCP Server (192.168.1.1) is able to distribute IP addresses in different scopes, one for each network. This server also provides a role of name server (DNS), with forwarder enabled to the internet. DHCP is also set to automatically register/unregister names in the DNS server.
 
 **Notes:**

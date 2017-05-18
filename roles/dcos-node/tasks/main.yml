@@ -15,7 +15,7 @@
 ###
 ---
 - name: Install Docker
-  include: docker.yml
+  include: docker-on-{{HARDWARE_ARCHITECTURE}}.yml
 
 - name: Install DC/OS Dependencies
   include: dcos-deps.yml

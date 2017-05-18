@@ -18,6 +18,12 @@
 # Variables here are applicable to all host groups
 httpd_port: 80
 
+# HPE Settings
+HARDWARE_ARCHITECTURE: HPE-CCLASS
+#HARDWARE_ARCHITECTURE: HPE-SYNERGY
+#HARDWARE_ARCHITECTURE: HPE-DL
+
+
 # DCOS Settings
 DCOS_GENERATE_CONFIG_PATH: '/root/dcos-cache/dcos_generate_config.sh'   # copied with $  curl -O https://downloads.dcos.io/dcos/stable/dcos_generate_config.sh
 DCOS_CLUSTER_NAME: 'DCOS-ONEVIEW'

@@ -16,7 +16,7 @@
 
 
  # Create server profiles, Deploy OS
- - include: deploy.yml
+ - include: deploy-on-{{HARDWARE_ARCHITECTURE}}.yml
 
  #Ensure servers are compliant to templates.
  - include: make_compliant.yml

@@ -31,26 +31,11 @@ INTERFACE_NAME: ens3f4
 DCOS_GENERATE_CONFIG_PATH: '/root/dcos-cache/dcos_generate_config.sh'   # copied with $  curl -O https://downloads.dcos.io/dcos/staible/dcos_generate_config.sh
 DCOS_CLUSTER_NAME: 'DCOS-ONEVIEW'
 DCOS_BOOTSTRAP_URL: 'http://bootstrap.{{ domain_name }}'
-config: "{{ playbook_dir }}/config.json"
+config: "{{ playbook_dir }}/oneview_config.json"
 #deployment_plan_name: 'RHEL-7.3_DCOS_pramod'
 deployment_plan_name: 'RHEL-7.3-DCOS-BASE-OS'
 management_network_name: 'Mgmt A'
-server_template_name: 'DCOSSPT'
-
-# ICsp Settings
-icsp: 192.168.1.20 # ICsp appliance IP Address
-icsp_username: Administrator # ICsp user name
-icsp_password: password # ICsp password
-
-# HPE Settings
-HARDWARE_ARCHITECTURE: HPE-CCLASS
-#HARDWARE_ARCHITECTURE: HPE-SYNERGY
-#HARDWARE_ARCHITECTURE: HPE-DL
-
-# DCOS Settings
-DCOS_GENERATE_CONFIG_PATH: '/root/dcos-cache/dcos_generate_config.sh'   # copied with $  curl -O https://downloads.dcos.io/dcos/stable/dcos_generate_config.sh
-DCOS_CLUSTER_NAME: 'DCOS-ONEVIEW'
-DCOS_BOOTSTRAP_URL: 'http://bootstrap.cilab.net'
+server_template_name: ' DCOS Node Template'
 
 # ICsp Settings
 icsp: <ICSPIPADDRESS> # ICsp appliance IP Address

@@ -26,10 +26,9 @@ node_type=slave_public
 
 # We start with 2 private agents
 [dcos-private-agents]
-<<<<<<< HEAD
 agent2
 agent3
-agent4
+#agent4
 
 [dcos-private-agents:vars]
 node_type=slave
@@ -42,7 +41,4 @@ dcos-agents
 
 # Removed nodes
 [dcos-evicted-agents]
-<<<<<<< HEAD
 #agent3
-=======
->>>>>>> 2d01b9b7b06a2c7c34655e4c698e8384090d72c5

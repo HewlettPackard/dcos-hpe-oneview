@@ -32,10 +32,13 @@
    - ipset
    - ntp
    - ntpdate
+<<<<<<< HEAD
    - rsync
    - net-tools
    - bind-utils
 #   - ntp-doc
+=======
+>>>>>>> 128dc07d9854d07e3051f8c12acf6839fe7635d2
 
 # Firewall should be configured if cluster is publicly accessible.
 # For local dev/test/demo, just disable it.

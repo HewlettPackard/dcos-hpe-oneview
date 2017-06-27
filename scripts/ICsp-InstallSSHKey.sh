@@ -13,20 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ###
----
-- name: Download DC/OS Node Installer
-  get_url: url=http://bootstrap/dcos_install.sh validate_certs=no dest=/tmp/dcos_install.sh mode=0755
-
-- name: Add nogroup group
-  group:
-    name: nogroup
-    state: present
-  
-- name: Install DC/OS Node
-  command: creates="/opt/mesosphere" /tmp/dcos_install.sh {{ node_type }}
-
-- name: Validate DC/OS Installation
-  #command: /usr/local/sbin/dcos-postflight
-  script: scripts/dcos-postflight.sh
-  changed_when: false
-  check_mode: no
+#!/bin/bash
+authorized_keys="@SSH_CERT@"
+if [ -n "$authorized_keys" ]; then
+  mkdir -p /root/.ssh/
+  touch /root/.ssh/authorized_keys
+  echo -e "$authorized_keys" > /root/.ssh/authorized_keys
+fi

@@ -1,24 +1,13 @@
-# limitations under the License.
-###
-
-# default user and password generated on ICsp provisioning
-# If you set the SSH key during the server provisioning, you don't need to
-# specify the credentials
-
-# If you wish, you can specify manually the IP addres that ICsp will set
-# to the provisioned server ethernet adapter
 
 # There is only one bootstrap node
 [dcos-bootstrap]
 bootstrap
-#bootstrap ansible_host=192.168.3.132 ansible_user=root ansible_ssh_pass=password
 
 # Masters should be an odd number
 [dcos-masters]
 master1
-#master1 ansible_host=192.168.3.133 ansible_user=root ansible_ssh_pass=password
-#master2
-#master3
+master2
+master3
 
 [dcos-masters:vars]
 node_type=master
@@ -31,16 +20,16 @@ dcos-private-agents
 # We start with 1 public agent
 [dcos-public-agents]
 agent1
-#agent1 ansible_host=192.168.3.124 ansible_user=root ansible_ssh_pass=password
 
 [dcos-public-agents:vars]
 node_type=slave_public
 
 # We start with 2 private agents
 [dcos-private-agents]
-#agent2
-#agent3
-#agent4
+<<<<<<< HEAD
+agent2
+agent3
+agent4
 
 [dcos-private-agents:vars]
 node_type=slave
@@ -53,4 +42,7 @@ dcos-agents
 
 # Removed nodes
 [dcos-evicted-agents]
+<<<<<<< HEAD
 #agent3
+=======
+>>>>>>> 2d01b9b7b06a2c7c34655e4c698e8384090d72c5

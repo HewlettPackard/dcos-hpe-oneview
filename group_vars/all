@@ -1,5 +1,4 @@
 ###
-
 # Copyright (2016) Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +12,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-###
-
 ---
 # Variables here are applicable to all host groups
 httpd_port: 80
@@ -29,25 +26,36 @@ HARDWARE_ARCHITECTURE: HPE-SYNERGY
 #HARDWARE_ARCHITECTURE: HPE-DL
 INTERFACE_NAME: ens3f4
 #INTERFACE_NAME: eno2
+
 # DCOS Settings
 DCOS_GENERATE_CONFIG_PATH: '/root/dcos-cache/dcos_generate_config.sh'   # copied with $  curl -O https://downloads.dcos.io/dcos/staible/dcos_generate_config.sh
 DCOS_CLUSTER_NAME: 'DCOS-ONEVIEW'
-<<<<<<< HEAD
 DCOS_BOOTSTRAP_URL: 'http://bootstrap.{{ domain_name }}'
-
 config: "{{ playbook_dir }}/config.json"
 #deployment_plan_name: 'RHEL-7.3_DCOS_pramod'
 deployment_plan_name: 'RHEL-7.3-DCOS-BASE-OS'
 management_network_name: 'Mgmt A'
 server_template_name: 'DCOSSPT'
-=======
-DCOS_BOOTSTRAP_URL: 'http://bootstrap.cilab.net'
->>>>>>> 128dc07d9854d07e3051f8c12acf6839fe7635d2
 
 # ICsp Settings
 icsp: 192.168.1.20 # ICsp appliance IP Address
 icsp_username: Administrator # ICsp user name
 icsp_password: password # ICsp password
+
+# HPE Settings
+HARDWARE_ARCHITECTURE: HPE-CCLASS
+#HARDWARE_ARCHITECTURE: HPE-SYNERGY
+#HARDWARE_ARCHITECTURE: HPE-DL
+
+# DCOS Settings
+DCOS_GENERATE_CONFIG_PATH: '/root/dcos-cache/dcos_generate_config.sh'   # copied with $  curl -O https://downloads.dcos.io/dcos/stable/dcos_generate_config.sh
+DCOS_CLUSTER_NAME: 'DCOS-ONEVIEW'
+DCOS_BOOTSTRAP_URL: 'http://bootstrap.cilab.net'
+
+# ICsp Settings
+icsp: <ICSPIPADDRESS> # ICsp appliance IP Address
+icsp_username: <ICSPUSERNAME> # ICsp user name
+icsp_password: <ICSPUSERPASSWORD> # ICsp password
 osbp_custom_attributes:
   - SSH_CERT: "{{ lookup('file', '~/.ssh/root_ansible.pub') }}"
 

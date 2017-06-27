@@ -1,6 +1,6 @@
 ---
 cluster_name: "{{ DCOS_CLUSTER_NAME }}"
-bootstrap_url: http://bootstrap.cilab.net
+bootstrap_url: "{{ DCOS_BOOTSTRAP_URL }}"
 exhibitor_storage_backend: static
 master_discovery: static
 resolvers:

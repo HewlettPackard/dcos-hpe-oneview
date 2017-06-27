@@ -1,5 +1,5 @@
 ###
-# Copyright (2016) Hewlett Packard Enterprise Development LP
+# Copyright (2017) Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 ###
 - name: Create Server Profiles
   oneview_server_profile:
-     config: "{{ playbook_dir }}/../oneview_config.json"
+     config: "{{ playbook_dir }}/oneview_config.json"
      data:
        server_template: "{{ ov_profile }}"
        name: "{{ inventory_hostname }}"

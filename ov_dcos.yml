@@ -1,5 +1,5 @@
-##
-# Copyright (2016) Hewlett Packard Enterprise Development LP
+###
+# Copyright (2017) Hewlett Packard Enterprise Development LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # You may not use this file except in compliance with the License.
@@ -25,7 +25,21 @@
   gather_facts: no
   roles:
     - hpe-oneview-server
- 
+
+#- name: Add proxy to the nodes
+#  hosts: all-nodes 
+#  gather_facts: yes
+#  tasks:
+   # - name: insert Proxy details for all users 
+      #blockinfile:
+      #  dest: /etc/profile.d/proxy.sh
+      #  create: true
+      #  block: |
+      #    export http_proxy=http://proxy.houston.hpecorp.net:8088
+      #    export https_proxy=http://proxy.houston.hpecorp.net:8088 
+   # - name: delete rogue default route
+   #   command:  ip route del default via 192.168.8.1
+
 - name: All nodes are DC/OS Nodes
   hosts: all-nodes 
   gather_facts: yes
@@ -34,9 +48,6 @@
      
 - name: Collect configuration of nodes
   hosts: all-nodes 
-  strategy: free
-  become: yes
-  become_user: root
   gather_facts: yes
   tasks:
   - name: Link Certificate Authorities
@@ -46,17 +57,12 @@
 
 - name: Generate DC/OS Bootstrap
   hosts: dcos-bootstrap
-  become: yes
-  become_user: root
   gather_facts: no
   tasks:
   - include: tasks/bootstrap.yml
 
 - name: Install DC/OS Masters and Agents
   hosts: dcos-masters,dcos-agents
-  strategy: free
-  become: yes
-  become_user: root
   gather_facts: no
   tasks:
   - include: tasks/install.yml

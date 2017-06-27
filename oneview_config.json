@@ -1,8 +1,9 @@
 {
-  "ip": "192.168.1.30",
+  "ip": "192.168.1.51",
   "credentials": {
     "userName": "administrator",
     "password": "password"
   },
+  "image_streamer_ip": "192.168.2.22",
   "api_version": 300
 }

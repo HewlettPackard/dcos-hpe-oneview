@@ -1,0 +1,5 @@
+---
+- hosts: all
+  tasks:
+    - wait_for: port=22 host="bootstrap.mesosphere.lab" delay=10 timeout=5
+      connection: local

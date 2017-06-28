@@ -965,6 +965,10 @@ We can invoke the playbook the same way as in Phase 1:
 Provisioning was down from 1h22mn to 36mn using the ImageStream instead
 of a PXE boot software such as ICsp.
 
+We can now connect to the dashboard of a newly provisioned DC/OS Enterprise Cluster
+
+<img src="./media/image24.png" width="527" height="404" />
+
 _**Notes:** Use cases 2 (adding nodes) and 3 (removing agent nodes) was also tested
 with Synergy, and works exactly the same way as described in Phase 1._
 

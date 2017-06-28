@@ -367,7 +367,7 @@ network_config:
       dhcpv4: true  
       ipv6Autoconfig:  
       vlanid: -1  
-    - macAddress: "{{ server\_profile.connections\[1\].mac }}"  
+    - macAddress: "{{ server_profile.connections[1].mac }}"  
       enabled: true  
       dhcpv4: true   
       ipv6Autoconfig: false  

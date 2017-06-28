@@ -35,7 +35,7 @@ config: "{{ playbook_dir }}/oneview_config.json"
 #deployment_plan_name: 'RHEL-7.3_DCOS_pramod'
 deployment_plan_name: 'RHEL-7.3-DCOS-BASE-OS'
 management_network_name: 'Mgmt A'
-server_template_name: ' DCOS Node Template'
+server_template_name: 'DCOS Node Template'
 
 # ICsp Settings
 icsp: <ICSPIPADDRESS> # ICsp appliance IP Address

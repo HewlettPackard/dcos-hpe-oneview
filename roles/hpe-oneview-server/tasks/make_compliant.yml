@@ -21,7 +21,7 @@
 
  - name : Remediate compliance issues
    oneview_server_profile:
-      config: "{{ playbook_dir }}/../oneview_config.json"
+      config: "{{ config }}"
       state: "compliant"
       data:
         name: "{{ inventory_hostname }}"

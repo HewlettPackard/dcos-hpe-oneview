@@ -19,6 +19,11 @@
 - name: Install Docker-Py
   pip: name=docker-py version=1.8.1
 
+- name: Restart Docker
+  service:
+    name: docker
+    state: restarted
+
 - name: Start Nginx
   docker:
     name: nginx
@@ -36,7 +41,7 @@
 
 - name: Generate IP Detection Script
   copy:
-    src: "files/ip-detect"
+    src: "files/ip-detect-on-{{ HARDWARE_ARCHITECTURE }}"
     dest: "/root/dcos/genconf/ip-detect"
     mode: "u=rwx,g=rwx,o=rwx"
 

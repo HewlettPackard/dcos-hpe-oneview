@@ -32,6 +32,9 @@
    - ipset
    - ntp
    - ntpdate
+   - rsync
+   - net-tools
+   - bind-utils
 
 # Firewall should be configured if cluster is publicly accessible.
 # For local dev/test/demo, just disable it.

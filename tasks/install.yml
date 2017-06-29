@@ -15,7 +15,7 @@
 ###
 ---
 - name: Download DC/OS Node Installer
-  get_url: url=http://bootstrap/dcos_install.sh dest=/tmp/dcos_install.sh mode=0755
+  get_url: url=http://bootstrap/dcos_install.sh validate_certs=no dest=/tmp/dcos_install.sh mode=0755
 
 - name: Add nogroup group
   group:

@@ -25,7 +25,7 @@
     - name: Delete server profile from HPE OneView
       connection: local
       oneview_server_profile:
-        config: "{{ playbook_dir }}/config.json"
+        config: "{{ playbook_dir }}/oneview_config.json"
         state: absent        
         data:
           name: "{{ inventory_hostname }}"

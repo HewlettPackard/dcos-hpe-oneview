@@ -848,7 +848,9 @@ DC/OS agents.
 ## Network configuration
 
 In this second phase a flat network was used, so all nodes are on the
-same physical network.
+same physical network. So the configuration is slightly simplified. Also an iSCSI network is introduced to support Synergy Image Streamer
+
+<img src="./media/image25.png" width="720" height="344" />
 
 ## HPE Composer configuration
 
